@@ -32,7 +32,7 @@ export function todos(state = [], action) {
     case actions.FORMAT_TODOS:
       return state.map(todo => {
         return {
-          ...{createdFormatted: formatDate(todo.created)},
+          ...createdFormatted: formatDate(todo.created),
           ...todo
         }
       });
