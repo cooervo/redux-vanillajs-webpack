@@ -1,7 +1,8 @@
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
-import * as actions from './actions';
+import * as actions from './todos/actions';
+import {isFailed, isLoading, todos} from './todos/reducers';
 
 function counter(state, action) {
   if (typeof state === 'undefined') {
@@ -17,11 +18,34 @@ function counter(state, action) {
   }
 }
 
-var store = createStore(counter, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+var reducers = combineReducers({
+  counter,
+  isFailed,
+  isLoading,
+  todos
+});
+var store = createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)));
 var valueEl = document.getElementById('value');
 
+var state;
+const todosList = document.getElementById('todos_list');
+
 function render() {
-  valueEl.innerHTML = store.getState().toString();
+  state = store.getState();
+  valueEl.innerHTML = state.counter;
+
+  if (state.todos) {
+    todosList.innerHTML = '';
+    state.todos.forEach(todo => {
+      const li = document.createElement('li');
+      li.classList.add('todo')
+      li.innerHTML = `
+        <span>${todo.title}</span><input type="checkbox"/>
+        <time>${todo.createdFormatted}</time>
+      `;
+      todosList.appendChild(li);
+    });
+  }
 }
 
 render();
@@ -47,9 +71,4 @@ document.getElementById('incrementAsync')
     }, 1000);
   });
 
-store.dispatch(actions.requestJson('https://jsonplaceholder.typicode.com/todos'));
-
-fetch('https://jsonplaceholder.typicode.com/todos')
-  .then(res => {
-    return res.json();
-  })
+store.dispatch(actions.getRequest('https://api.myjson.com/bins/xftrs'));

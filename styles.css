@@ -8,3 +8,19 @@
     text-decoration: line-through;
     color: darkgrey;
 }
+
+.todo {
+    margin-bottom: 5px;
+}
+
+.todo span {
+    font-weight: bold;
+}
+
+.todo input {
+    margin-left: 5px;
+}
+.todo time {
+    display: block;
+    color: darkgrey;
+}
