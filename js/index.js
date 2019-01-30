@@ -3,6 +3,7 @@ import thunkMiddleware from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import * as actions from './todos/actions';
 import {isFailed, isLoading, todos} from './todos/reducers';
+import * as todosController from './todos/controller';
 
 function counter(state, action) {
   if (typeof state === 'undefined') {
@@ -24,7 +25,7 @@ var reducers = combineReducers({
   isLoading,
   todos
 });
-var store = createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)));
 var valueEl = document.getElementById('value');
 
 var state;
@@ -34,16 +35,17 @@ function render() {
   state = store.getState();
   valueEl.innerHTML = state.counter;
 
-  if (state.todos) {
+  if (state.todos.length > 0) {
     todosList.innerHTML = '';
     state.todos.forEach(todo => {
       const li = document.createElement('li');
-      li.classList.add('todo')
+      li.classList.add('todo');
       li.innerHTML = `
         <span>${todo.title}</span><input type="checkbox"/>
         <time>${todo.createdFormatted}</time>
       `;
       todosList.appendChild(li);
+      todosController.onMarkAsCompleted(li)
     });
   }
 }
@@ -72,3 +74,4 @@ document.getElementById('incrementAsync')
   });
 
 store.dispatch(actions.getRequest('https://api.myjson.com/bins/xftrs'));
+todosController.onAddTodo()

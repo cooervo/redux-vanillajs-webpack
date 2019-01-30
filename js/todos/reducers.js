@@ -32,18 +32,25 @@ export function todos(state = [], action) {
     case actions.FORMAT_TODOS:
       return state.map(todo => {
         return {
-          ...createdFormatted: formatDate(todo.created),
+          createdFormatted: formatDate(todo.created),
           ...todo
-        }
+        };
       });
-
+    case actions.ADD_TODO:
+      return [
+        ...state,
+        {
+          title: action.title,
+          created: action.created,
+          completed: false
+        }
+      ];
     default:
       return state;
   }
 }
 
 function formatDate(dateStr) {
-  return dateStr + 'FOO';
   const date = new Date(dateStr);
   const dateNum = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');

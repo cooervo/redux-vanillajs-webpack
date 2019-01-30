@@ -2,13 +2,14 @@
 /*
 ° the only way to modify the state is through actions or action creators
 ° Actions describe what should change
-° Action creators a function that returns an action
+° Action creators a function that returns an action (or a fn in case of thunk)
  */
 export const actions = {
   REQUEST_FAILED: 'REQUEST_FAILED',
   REQUEST_SUCCESS: 'REQUEST_SUCCESS',
   REQUEST_LOADING: 'REQUEST_LOADING',
   FORMAT_TODOS: 'FORMAT_TODOS',
+  ADD_TODO: 'ADD_TODO',
 }
 
 function toggleIsLoading(isLoading){
@@ -25,7 +26,7 @@ function todosReceived(todos){
   }
 }
 
-function todosFormat(todos){
+export function todosFormat(todos){
   return {
     type: actions.FORMAT_TODOS,
     todos: todos
@@ -39,8 +40,16 @@ function requestFailed(isError){
   }
 }
 
+export function addTodo(title){
+  return {
+    type: actions.ADD_TODO,
+    title: title,
+    created: new Date().toISOString()
+  }
+}
+
 /**
- * Thunk returns a function
+ * Thunk is an action creator that returns a function
  * @param url
  * @return {Function}
  */
