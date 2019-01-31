@@ -31,23 +31,33 @@ var valueEl = document.getElementById('value');
 var state;
 const todosList = document.getElementById('todos_list');
 
-function render() {
-  state = store.getState();
-  valueEl.innerHTML = state.counter;
-
+function renderTodos() {
+  todosList.innerHTML = '';
   if (state.todos.length > 0) {
-    todosList.innerHTML = '';
-    state.todos.forEach(todo => {
+    state.todos.forEach((todo, index) => {
       const li = document.createElement('li');
+      const isChecked = todo.completed ? 'checked' : '';
+      if (isChecked) {
+        li.classList.add('is-checked');
+      }
       li.classList.add('todo');
       li.innerHTML = `
-        <span>${todo.title}</span><input type="checkbox"/>
+        <span data-index="${index}">${todo.title}</span>
+        <input ${isChecked} type="checkbox"/> 
+        <button>Delete</button>
         <time>${todo.createdFormatted}</time>
       `;
       todosList.appendChild(li);
-      todosController.onMarkAsCompleted(li)
+      todosController.onMarkAsCompleted(li);
+      todosController.onDelete(li);
     });
   }
+}
+
+function render() {
+  state = store.getState();
+  valueEl.innerHTML = state.counter;
+  renderTodos();
 }
 
 render();
@@ -74,4 +84,4 @@ document.getElementById('incrementAsync')
   });
 
 store.dispatch(actions.getRequest('https://api.myjson.com/bins/xftrs'));
-todosController.onAddTodo()
+todosController.onAddTodo();

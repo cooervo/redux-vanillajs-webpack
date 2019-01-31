@@ -3,6 +3,10 @@
     padding: 5px 20px 20px;
     margin: 20px 0;
 }
+ul{
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
 
 .is-completed {
     text-decoration: line-through;
@@ -10,7 +14,11 @@
 }
 
 .todo {
-    margin-bottom: 5px;
+    background-color: #EAEAEA;
+    margin-bottom: 10px;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .todo span {
@@ -22,5 +30,9 @@
 }
 .todo time {
     display: block;
-    color: darkgrey;
+    color: gray;
+}
+
+.is-checked span {
+    text-decoration: line-through;
 }

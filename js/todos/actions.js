@@ -10,6 +10,8 @@ export const actions = {
   REQUEST_LOADING: 'REQUEST_LOADING',
   FORMAT_TODOS: 'FORMAT_TODOS',
   ADD_TODO: 'ADD_TODO',
+  TOGGLE_COMPLETED: 'TOGGLE_COMPLETED',
+  DELETE_TODO: 'DELETE_TODO'
 }
 
 function toggleIsLoading(isLoading){
@@ -45,6 +47,21 @@ export function addTodo(title){
     type: actions.ADD_TODO,
     title: title,
     created: new Date().toISOString()
+  }
+}
+
+
+export function toggleCompleted(index){
+  return {
+    type: actions.TOGGLE_COMPLETED,
+    index: Number(index)
+  }
+}
+
+export function deleteTodo(index){
+  return {
+    type: actions.DELETE_TODO,
+    index: Number(index)
   }
 }
 

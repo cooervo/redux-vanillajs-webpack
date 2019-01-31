@@ -45,6 +45,26 @@ export function todos(state = [], action) {
           completed: false
         }
       ];
+    case actions.TOGGLE_COMPLETED:
+      return state.map((todo, index) => {
+        if (index === action.index) {
+          return {
+            ...todo,
+            completed: !todo.completed
+          };
+        } else {
+          return {...todo};
+        }
+      });
+    case actions.DELETE_TODO: {
+      return state.filter((todo, index) => {
+        if (index === action.index) {
+          return false;
+        }
+        return true;
+
+      });
+    }
     default:
       return state;
   }
